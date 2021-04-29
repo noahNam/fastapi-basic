@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "fastapi-basic"
+version = "0.1.0"
+description = ""
+authors = ["noah <noah85.Nam@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.63.0"
+uvicorn = "^0.13.4"
+Hypercorn = "^0.11.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
