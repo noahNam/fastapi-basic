@@ -1,5 +1,6 @@
-from fastapi import FastAPI, requests
+from fastapi import FastAPI
 from pydantic import BaseModel
+import requests
 
 app = FastAPI()
 
@@ -38,12 +39,13 @@ def get_city(city_id: int):
     return {"name": city["name"], "timezone": city["timezone"], "current_time": current_time}
 
 
-@app.get("/cities")
+@app.post("/cities")
 def create_city(city: City):
     db.append(city.dict())
     return db[-1]
 
 
-@app.get("/cities/{city_id")
+@app.delete("/cities/{city_id")
 def delete_city(city_id: int):
-    pass
+    db.pop(city_id-1)
+    return {}
