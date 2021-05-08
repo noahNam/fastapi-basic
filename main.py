@@ -21,9 +21,9 @@ def main():
 def get_cities():
     results = []
     for city in db:
-        str_ = f"https://worldtimeapi.org/timezone/{city['timezone']}"
+        str_ = f"http://worldtimeapi.org/api/timezone/{city['timezone']}"
         r = requests.get(str_)
-        current_time = r.json()["datetime"]
+        current_time = r.json()['datetime']
         results.append({"name": city["name"], "timezone": city["timezone"], "current_time": current_time})
 
     return results
@@ -32,7 +32,7 @@ def get_cities():
 @app.get("/cities/{city_id}")
 def get_city(city_id: int):
     city = db[city_id - 1]
-    str_ = f"https://worldtimeapi.org/timezone/{city['timezone']}"
+    str_ = f"http://worldtimeapi.org/api/timezone/{city['timezone']}"
     r = requests.get(str_)
     current_time = r.json()["datetime"]
 
