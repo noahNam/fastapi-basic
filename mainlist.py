@@ -26,7 +26,7 @@ def main():
 
 
 @app.get("/cities", response_class=HTMLResponse)
-def get_cities():
+def get_cities(request: Request):
     context = {}
     result_cities = []
 
@@ -37,10 +37,10 @@ def get_cities():
 
         result_cities.append({"name": city["name"], "timezone": city["timezone"], "current_time": current_time})
 
-    context['request'] = Request
+    context['request'] = request
     context['result_cities'] = result_cities
 
-    return templates.TemplateResponse('city', context)
+    return templates.TemplateResponse('city_list', context)
 
 
 @app.get("/cities/{city_id}")
