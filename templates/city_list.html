@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> </title>
+    <title>Title</title>
 </head>
 <body>
+
+<h1>City list</h1>
+
+    {% if result_cities %}
+        {% for city in result_cities %}
+            <div>
+                {{city.name}} - {{city.timezone}}
+            </div>
+        {% endfor %}
+    {% else %}
+            <div>
+                No city...
+            </div>
+    {% endif %}
 
 </body>
 </html>

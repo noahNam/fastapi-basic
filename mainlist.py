@@ -40,7 +40,7 @@ def get_cities(request: Request):
     context['request'] = request
     context['result_cities'] = result_cities
 
-    return templates.TemplateResponse('city_list', context)
+    return templates.TemplateResponse('city_list.html', context)
 
 
 @app.get("/cities/{city_id}")
