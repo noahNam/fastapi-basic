@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import requests
 
@@ -7,9 +9,15 @@ app = FastAPI()
 db = []
 
 
+# -----------------------------------------------------
+# data model
+# -----------------------------------------------------
 class City(BaseModel):
     name: str
     timezone: str
+
+
+templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/")
@@ -17,16 +25,22 @@ def main():
     return {"Hello": "World"}
 
 
-@app.get("/cities")
+@app.get("/cities", response_class=HTMLResponse)
 def get_cities():
-    results = []
+    context = {}
+    result_cities = []
+
     for city in db:
         str_ = f"http://worldtimeapi.org/api/timezone/{city['timezone']}"
         r = requests.get(str_)
         current_time = r.json()['datetime']
-        results.append({"name": city["name"], "timezone": city["timezone"], "current_time": current_time})
 
-    return results
+        result_cities.append({"name": city["name"], "timezone": city["timezone"], "current_time": current_time})
+
+    context['request'] = Request
+    context['result_cities'] = result_cities
+
+    return templates.TemplateResponse('city', context)
 
 
 @app.get("/cities/{city_id}")
@@ -47,5 +61,5 @@ def create_city(city: City):
 
 @app.delete("/cities/{city_id")
 def delete_city(city_id: int):
-    db.pop(city_id-1)
+    db.pop(city_id - 1)
     return {}
