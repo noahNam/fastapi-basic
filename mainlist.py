@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -34,7 +35,6 @@ def get_cities(request: Request):
         str_ = f"http://worldtimeapi.org/api/timezone/{city['timezone']}"
         r = requests.get(str_)
         current_time = r.json()['datetime']
-
         result_cities.append({"name": city["name"], "timezone": city["timezone"], "current_time": current_time})
 
     context['request'] = request
@@ -63,3 +63,7 @@ def create_city(city: City):
 def delete_city(city_id: int):
     db.pop(city_id - 1)
     return {}
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
