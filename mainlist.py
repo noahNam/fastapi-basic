@@ -54,14 +54,15 @@ def get_cities(request: Request):
     return templates.TemplateResponse('city_list.html', context)
 
 
-@app.get("/cities/{city_id}")
-def get_city(city_id: int):
+@app.get('/cities/{city_id}', response_class=HTMLResponse)
+def get_city(request: Request, city_id: int):
     city = db[city_id - 1]
-    str_ = f"http://worldtimeapi.org/api/timezone/{city['timezone']}"
-    r = requests.get(str_)
-    current_time = r.json()["datetime"]
+    r = requests.get(f"http://worldtimeapi.org/api/timezone/{city['timezone']}")
+    cur_time = r.json()['datetime']
 
-    return {"name": city["name"], "timezone": city["timezone"], "current_time": current_time}
+    # return {'name':city['name'], 'timezone':city['timezone'], 'current_time': cur_time}
+    context = {'request': request, 'name': city['name'], 'timezone': city['timezone'], 'current_time': cur_time}
+    return templates.TemplateResponse("city_detail.html", context)
 
 
 @app.post("/cities")
