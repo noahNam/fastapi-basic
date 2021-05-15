@@ -31,11 +31,15 @@ def get_cities(request: Request):
     context = {}
     result_cities = []
 
+    cnt = 0
     for city in db:
         str_ = f"http://worldtimeapi.org/api/timezone/{city['timezone']}"
         r = requests.get(str_)
         current_time = r.json()['datetime']
-        result_cities.append({"name": city["name"], "timezone": city["timezone"], "current_time": current_time})
+
+        cnt +=1
+
+        result_cities.append({"id": cnt, "name": city["name"], "timezone": city["timezone"], "current_time": current_time})
 
     context['request'] = request
     context['result_cities'] = result_cities
