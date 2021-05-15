@@ -139,7 +139,7 @@
             <td align="center">{{city.current_time}}</td>
             <td align="center"><a href="/cities/{{city.id}}"><button>VIEW</button></a></td>
             <td align="center"><button cityid="{{city.id}}" onclick="putCity(this)">수정</button></td>
-            <td align="center"><button onclick="deleteCity({{city.id}})">삭제</button></td>
+            <td align="center"><button onclick="deleteCity('{{city.id}}')">삭제</button></td>
         </tr>
         {% endfor %}
     {% else %}

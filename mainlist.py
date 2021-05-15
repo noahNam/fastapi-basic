@@ -18,6 +18,12 @@ class City(BaseModel):
     timezone: str
 
 
+class CityModify(BaseModel):
+    id: int
+    name: str
+    timezone: str
+
+
 templates = Jinja2Templates(directory="templates")
 
 
@@ -37,9 +43,10 @@ def get_cities(request: Request):
         r = requests.get(str_)
         current_time = r.json()['datetime']
 
-        cnt +=1
+        cnt += 1
 
-        result_cities.append({"id": cnt, "name": city["name"], "timezone": city["timezone"], "current_time": current_time})
+        result_cities.append(
+            {"id": cnt, "name": city["name"], "timezone": city["timezone"], "current_time": current_time})
 
     context['request'] = request
     context['result_cities'] = result_cities
@@ -63,10 +70,17 @@ def create_city(city: City):
     return db[-1]
 
 
-@app.delete("/cities/{city_id")
+@app.put("/cities")
+def modify_city(city: CityModify):
+    db[city.id - 1] = {"name": city.name, "timezone": city.timezone}
+    return db[city.id - 1]
+
+
+@app.delete('/cities/{city_id}')
 def delete_city(city_id: int):
     db.pop(city_id - 1)
-    return {}
+
+    return {'result_msg': 'Deleted...'}
 
 
 if __name__ == "__main__":
